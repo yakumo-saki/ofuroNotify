@@ -1,0 +1,14 @@
+.DS_Store
+dist/
+htmlcov/
+__pycache__/
+.vscode/
+*.pyc
+.coverage
+setup.cfg
+config.yaml
+package/
+build/
+function.zip
+function.json
+exec.sh

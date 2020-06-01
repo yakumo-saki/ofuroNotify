@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+
+# 各環境変数の中身を空にするか未定義にするとその処理はスキップされる
+
+export SLACK_URL=https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxx
+
+export MASTODON_URL=https://mstdn.example.com/
+export MASTODON_ACC_TOKEN=abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg
+
+python3 lambda_function.py

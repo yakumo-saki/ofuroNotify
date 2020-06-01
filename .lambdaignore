@@ -1,0 +1,7 @@
+.lambdaignore
+.vscode/*
+function.json
+function.zip
+.git/*
+.terraform/*
+terraform.tfstate

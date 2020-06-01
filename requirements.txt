@@ -1,0 +1,5 @@
+# pip install --target ./package -r requirements.txt
+# boto3 はlambda標準で組み込まれているので不要 
+# boto3
+slackweb
+Mastodon.py
