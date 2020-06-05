@@ -9,7 +9,7 @@ cd ${SCRIPT_DIR}
 rm -rf ${SCRIPT_DIR}/build/*
 pip install --target ./build -r requirements.txt
 
-rsync -exclude=.git --exclude=package --exclude=deploy.sh --exclude=requirements.txt --exclude=function.zip --exclude=build ${SCRIPT_DIR}/. ${SCRIPT_DIR}/build/
+rsync -a -exclude=.git --exclude=package --exclude=deploy.sh --exclude=requirements.txt --exclude=function.zip --exclude=build ${SCRIPT_DIR}/. ${SCRIPT_DIR}/build/
 
 read -p "Deploy to AWS Lambda ? (y/N): " yn
 case "$yn" in [yY]*) ;; *) echo "Abort." ; exit ;; esac
