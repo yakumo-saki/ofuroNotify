@@ -7,4 +7,10 @@ export SLACK_URL=https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxx
 export MASTODON_URL=https://mstdn.example.com/
 export MASTODON_ACC_TOKEN=abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg
 
-python3 lambda_debug.py
+export WEBHOOK_URL=http://webhook.example.com/webhook/api
+
+# 今の所無意味（未実装）
+export SQS_ENDPOINT=https://sqs.ap-northeast-1.amazonaws.com/YYYYYYY/XXX
+
+python3 lambda_debug_notify.py
+python3 lambda_debug_sqs.py

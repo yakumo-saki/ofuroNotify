@@ -17,3 +17,7 @@ def mastodon_post(message, url, token):
     mastodon = Mastodon(access_token = token, api_base_url = url)
     mastodon.toot(message + " 👁️")
     print('mastodon done')
+
+
+def webhook_post(message, url):
+    pass
