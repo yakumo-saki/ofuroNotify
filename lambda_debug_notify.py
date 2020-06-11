@@ -13,19 +13,13 @@ import os
 import subprocess
 
 
-def setup_debug_log():
-    logging.config.dictConfig(yaml.safe_load(open("logging-debug.yaml").read()))
-
-    # これはすべてのファイルに書く
-    logger = logging.getLogger(__name__)
-
-    logger.info("デバッグ実行 SQS")
-
-
 # テスト用に直接呼び出ししたとき
 if __name__ == "__main__":
+    logging.config.dictConfig(yaml.safe_load(open("logging-debug.yaml").read()))
 
-    print("デバッグ実行")
+    logger = logging.getLogger(__name__)
+    logger.info("デバッグ実行 NOTIFY")
+
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1', use_ssl=False, endpoint_url="http://localhost:8000",
 					aws_access_key_id='local', aws_secret_access_key='local')
     main_process(dynamodb, None, None)
