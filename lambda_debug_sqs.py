@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import boto3
 from boto3.session import Session
 from concurrent import futures
-from src.sqs import sqs_main
+from main.sqs import sqs_main
 
 import logging
 import logging.config
@@ -19,6 +21,7 @@ if __name__ == "__main__":
     logging.config.dictConfig(yaml.safe_load(open("logging-debug.yaml").read()))
 
     logger = logging.getLogger(__name__)
+    logger.debug("デバッグ実行 SQS")
     logger.info("デバッグ実行 SQS")
 
     sqs_main()

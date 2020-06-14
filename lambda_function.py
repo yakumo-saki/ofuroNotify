@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import boto3
 from boto3.session import Session
 from concurrent import futures
-from src.main import main_process
+from main.main import main_process
 
 import logging
 import logging.config

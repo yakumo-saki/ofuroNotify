@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+from logging import getLogger
+logger = getLogger(__name__)
+
 import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
@@ -63,7 +68,7 @@ class DynamoService:
                 }
             )
 
-            print(f"Table {self.HIST_TABLE_NAME} created")
+            logger.debug(f"Table {self.HIST_TABLE_NAME} created")
         except ClientError as e:
             if e.response['Error']['Code'] != 'ResourceInUseException':
                 raise e
@@ -91,7 +96,7 @@ class DynamoService:
                 }
             )
 
-            print(f"Table {self.LAST_TABLE_NAME} created")
+            logger.debug(f"Table {self.LAST_TABLE_NAME} created")
         except ClientError as e:
             if e.response['Error']['Code'] != 'ResourceInUseException':
                 raise e
@@ -102,7 +107,7 @@ class DynamoService:
 
         self.has_dynamodb()
 
-        print(self.dynamodb)
+        logger.debug(self.dynamodb)
 
         table = self.dynamodb.Table(self.LAST_TABLE_NAME)
 
@@ -129,6 +134,9 @@ class DynamoService:
             response = table.put_item(Item=history)
 
             self.update_last_history(history)
+
+            logger.debug(f'history created')
+
         except ClientError as e:
             raise e
         else:
@@ -177,7 +185,7 @@ class DynamoService:
             )
         except ClientError as e:
             if e.response['Error']['Code'] == "ConditionalCheckFailedException":
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
             else:
                 raise
         else:
