@@ -5,3 +5,11 @@ function.zip
 .git/*
 .terraform/*
 terraform.tfstate
+
+setup.cfg
+README.md
+requirements.txt
+requirements-dev.txt
+deploy.sh
+exec.sh
+exec.sh-sample

@@ -7,4 +7,3 @@ slackweb
 Mastodon.py
 pyyaml
 requests
-pytest
