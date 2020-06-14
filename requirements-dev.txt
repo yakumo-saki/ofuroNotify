@@ -1,0 +1,4 @@
+# 開発時のみ使用するパッケージ類
+# pip install --target ./package -r requirements-dev.txt
+boto3
+pytest

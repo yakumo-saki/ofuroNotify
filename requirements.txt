@@ -1,4 +1,6 @@
 # pip install --target ./package -r requirements.txt
+# 開発環境では以下も実施
+# pip install --target ./package -r requirements-dev.txt
 # boto3 はlambda標準で組み込まれているので不要 
 # boto3
 slackweb
