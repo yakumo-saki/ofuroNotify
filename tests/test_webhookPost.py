@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import pytest
 
 import os
@@ -12,7 +13,8 @@ from main.webhookPost import WebhookPost
 def set_env_value():
     os.environ['WEBHOOK_URL'] = 'dummy'
 
-def test_post():
+def test_post(caplog):
+    caplog.set_level(logging.INFO)
     post = WebhookPost()
     post.post('In', None, None, True)
     assert True

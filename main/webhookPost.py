@@ -5,6 +5,7 @@ logger = getLogger(__name__)
 
 from main.postBase import PostBase
 
+import json
 import os
 import requests
 
@@ -32,6 +33,7 @@ class WebhookPost(PostBase):
         if dryrun == False:
             r = requests.post(self.webhook_url, data=payload, timeout=2)
         else:
-            logger.debug(f'self.webhook_url payload={payload}')
+            payload_dump = json.dumps(payload, ensure_ascii=False)
+            logger.debug(f'self.webhook_url payload={payload_dump}')
 
         logger.debug('done')

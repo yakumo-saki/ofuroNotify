@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import pytest
 
 import os
@@ -12,7 +13,9 @@ from main.slackPost import SlackPost
 def set_env_value():
     os.environ['SLACK_URL'] = 'dummy'
 
-def test_post():
+
+def test_post(caplog):
+    caplog.set_level(logging.INFO)
     slack = SlackPost()
     slack.post('In', None, None, True)
     assert True
