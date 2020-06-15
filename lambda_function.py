@@ -24,10 +24,11 @@ def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
 
-    main_process(dynamodb, event, context)
+    type = main_process(dynamodb, event, context)
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Done!')
+        'status': 'success',
+        'type' : type
     }
 

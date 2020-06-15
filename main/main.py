@@ -42,6 +42,7 @@ def main_process(aDynamodb, event, context):
     post_sns(inOut, lastIn, duration_sec)
 
     logger.debug("main_process done")
+    return inOut
 
 
 def get_new_params(dynamo):

@@ -24,6 +24,7 @@ if __name__ == "__main__":
 
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1', use_ssl=False, endpoint_url="http://localhost:8000",
 					aws_access_key_id='local', aws_secret_access_key='local')
-    main_process(dynamodb, None, None)
+    type = main_process(dynamodb, None, None)
 
+    logger.info(f"type = {type}")
     logger.info("デバッグ実行 NOTIFY DONE")
