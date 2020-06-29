@@ -13,7 +13,7 @@ pip install --target ./build -r requirements.txt
 
 rsync -a -exclude=.git --exclude=package --exclude=deploy.sh --exclude=requirements.txt --exclude=function.zip --exclude=build ${SCRIPT_DIR}/. ${SCRIPT_DIR}/build/
 
-case "$yn" in [yY]*) ;; *) echo "Abort." ; exit ;; esac
+case "$yn" in [yY]*) ;; *) echo "Build complete. (without deploy)" ; exit ;; esac
 
 echo "Deploy to lambda using lambroll"
 
