@@ -3,14 +3,9 @@
 from logging import getLogger
 logger = getLogger(__name__)
 
-import boto3
-from boto3.session import Session
 from concurrent import futures
 
 import os
-import time
-import json
-import random
 
 from main.dynamoService import DynamoService
 from main.slackPost import SlackPost
@@ -42,6 +37,10 @@ def get_click_type(event):
 def main_process(aDynamodb, event, context):
 
     logger.debug("main_process start")
+    dryrun = (os.environ.get('DRYRUN') == "1")
+
+    if dryrun:
+        logger.info("DRYRUN")
 
     clicktype = get_click_type(event)
 
@@ -54,9 +53,10 @@ def main_process(aDynamodb, event, context):
     (inOut, lastIn, duration_sec) = get_new_params(dynamo)
     logger.debug(f'got params {inOut} {lastIn} {duration_sec}')
 
-    dynamo.put_history(inOut, lastIn)
+    if not dryrun:
+        dynamo.put_history(inOut, lastIn)
 
-    post_sns(inOut, lastIn, duration_sec)
+    post_sns(inOut, lastIn, duration_sec, clicktype, dryrun)
 
     logger.debug("main_process done")
     return inOut
@@ -83,11 +83,10 @@ def get_new_params(dynamo):
     return inOut, lastIn, duration_sec
 
 
-def post_sns(inOut, lastIn, duration_sec, clickType):
+def post_sns(inOut, lastIn, duration_sec, clickType, dryrun = False):
     future_list = []
     with futures.ThreadPoolExecutor(max_workers=10) as executor:
 
-        dryrun = (os.environ.get('DRYRUN') == "1")
         params = {'inOut': inOut, 'lastIn': 'lastIn', 'duration_sec': duration_sec, 'clickType': clickType, 'dryrun': dryrun}
 
         mastodon_post = MastodonPost()

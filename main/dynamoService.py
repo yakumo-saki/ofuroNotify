@@ -3,7 +3,7 @@
 from logging import getLogger
 logger = getLogger(__name__)
 
-import boto3
+# import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
