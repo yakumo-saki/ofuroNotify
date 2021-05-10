@@ -18,7 +18,7 @@ class WebhookPost(PostBase):
 
         self.webhook_url = os.environ.get('WEBHOOK_URL')
 
-    def post(self, inOut, lastIn, duration_sec, dryrun = False):
+    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
 
         logger.debug(f'start post')
 

@@ -19,7 +19,7 @@ class MastodonPost(PostBase):
         self.mastodon_token = os.environ.get('MASTODON_ACC_TOKEN')
 
 
-    def post(self, inOut, lastIn, duration_sec, dryrun = False):
+    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
 
         logger.debug(f'start post')
 
@@ -27,7 +27,7 @@ class MastodonPost(PostBase):
             logger.debug("no url or token. skip")
             return
 
-        message = self.create_message(inOut, lastIn, duration_sec)
+        message = self.create_message(inOut, lastIn, duration_sec, clicktype)
 
         logger.debug(f'post msg {message} url {self.mastodon_url}')
 

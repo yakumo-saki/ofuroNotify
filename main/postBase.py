@@ -6,6 +6,10 @@ import math
 
 class PostBase:
 
+    CLICK_SINGLE = 'SINGLE'
+    CLICK_LONG = 'LONG'
+    CLICK_DOUBLE = 'DOUBLE'
+
     def duration_to_text(self, second):
         delta = timedelta(seconds=int(second) )
 
@@ -24,10 +28,15 @@ class PostBase:
         return ret.strip()
 
 
-    def create_message(self, inOut, lastIn, duration_sec):
+    def create_message(self, inOut, lastIn, duration_sec, clickType):
 
         if inOut == 'In':
-            message = f'おふろる 🛀'
+            if clickType == self.CLICK_DOUBLE:
+                message = f'シャワる 🛀'
+            elif clickType == self.CLICK_LONG:
+                message = f'おふろる 📲🛀'
+            else:
+                message = f'おふろる 🛀'
         else:
             duration = self.duration_to_text(duration_sec)
             message = f'ほかぱい！ ✨ ({duration})'
@@ -35,5 +44,5 @@ class PostBase:
         return message
 
 
-    def post(self, inOut, lastIn, duration_sec, dryrun = False):
-        raise InvalidOperation("cannnot call post_base.post()")
+    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
+        raise InvalidOperation("can't call post_base.post()")

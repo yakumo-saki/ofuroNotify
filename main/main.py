@@ -23,10 +23,27 @@ import math
 
 dynamodb = None
 
+def get_click_type(event):
+    clicktype = event['deviceEvent']['buttonClicked']['clickType']
+    print(clicktype)
+
+    if (clicktype == "SINGLE"):
+        message = "ボタンが1回押されました"
+    elif (clicktype == "DOUBLE"):
+        message = "ボタンが2回押されました"
+    elif (clicktype == "LONG"):
+        message = "ボタンが長押しされました"
+    else:
+        message = "clickTypeを正常に取得できませんでした"
+
+    return clicktype
+
 # 処理のメイン部分
 def main_process(aDynamodb, event, context):
 
     logger.debug("main_process start")
+
+    clicktype = get_click_type(event)
 
     dynamodb = aDynamodb
 
@@ -66,20 +83,23 @@ def get_new_params(dynamo):
     return inOut, lastIn, duration_sec
 
 
-def post_sns(inOut, lastIn, duration_sec):
+def post_sns(inOut, lastIn, duration_sec, clickType):
     future_list = []
     with futures.ThreadPoolExecutor(max_workers=10) as executor:
 
+        dryrun = (os.environ.get('DRYRUN') == "1")
+        params = {'inOut': inOut, 'lastIn': 'lastIn', 'duration_sec': duration_sec, 'clickType': clickType, 'dryrun': dryrun}
+
         mastodon_post = MastodonPost()
-        mastodon = executor.submit(fn=mastodon_post.post, inOut=inOut, lastIn=lastIn, duration_sec=duration_sec)
+        mastodon = executor.submit(fn=mastodon_post.post, **params)
         future_list.append(mastodon)
 
         slack_post = SlackPost()
-        slack = executor.submit(fn=slack_post.post, inOut=inOut, lastIn=lastIn, duration_sec=duration_sec)
+        slack = executor.submit(fn=slack_post.post, **params)
         future_list.append(slack)
 
         webhook_post = WebhookPost()
-        webhook = executor.submit(fn=webhook_post.post, inOut=inOut, lastIn=lastIn, duration_sec=duration_sec)
+        webhook = executor.submit(fn=webhook_post.post, **params)
         future_list.append(webhook)
 
     _ = futures.as_completed(fs=future_list)

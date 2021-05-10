@@ -16,7 +16,7 @@ class SlackPost(PostBase):
         self.webhook_url = os.environ.get('SLACK_URL')
 
 
-    def post(self, inOut, lastIn, duration_sec, dryrun = False):
+    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
 
         logger.debug(f'start post')
 
