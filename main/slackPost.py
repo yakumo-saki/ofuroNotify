@@ -25,7 +25,8 @@ class SlackPost(PostBase):
             return {"success": True, "message": "No url specified. skip"}
 
         message = self.create_message(inOut, lastIn, duration_sec, clickType)
-        message = "<!channel> " + message
+        #message = "<!channel> " + message
+        message = message
 
         logger.info(f'post msg {message} webhook url {self.webhook_url}')
         slack = slackweb.Slack(url=self.webhook_url)
