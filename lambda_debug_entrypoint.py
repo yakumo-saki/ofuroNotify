@@ -24,7 +24,18 @@ if __name__ == "__main__":
 
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1', use_ssl=False, endpoint_url="http://localhost:8000",
 					aws_access_key_id='local', aws_secret_access_key='local')
-    type = main_process(dynamodb, None, None)
+
+    if dynamodb == None:
+        logger.error("Cant connect DynamoDB Local")
+        exit(16)
+
+    # テストデータを作成
+    event = {}
+    clickType = {'clickType': 'SINGLE'}
+    event["deviceEvent"] = {}
+    event["deviceEvent"]['buttonClicked'] = clickType
+
+    type = main_process(dynamodb, event, None)
 
     logger.info(f"type = {type}")
     logger.info("デバッグ実行 NOTIFY DONE")

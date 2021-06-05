@@ -16,20 +16,22 @@ class SlackPost(PostBase):
         self.webhook_url = os.environ.get('SLACK_URL')
 
 
-    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
+    def post(self, inOut, lastIn, duration_sec, clickType, dryrun = False):
 
         logger.debug(f'start post')
 
         if (not self.webhook_url):
             logger.debug("no url . skip")
+            return {"success": True, "message": "No url specified. skip"}
 
-        message = self.create_message(inOut, lastIn, duration_sec)
+        message = self.create_message(inOut, lastIn, duration_sec, clickType)
         message = "<!channel> " + message
 
-        logger.debug(f'post msg {message} webhook url {self.webhook_url}')
+        logger.info(f'post msg {message} webhook url {self.webhook_url}')
         slack = slackweb.Slack(url=self.webhook_url)
 
         if dryrun == False:
             slack.notify(text=message)
 
         logger.debug('done')
+        return {"success": True, "message": "Slack post ok"}

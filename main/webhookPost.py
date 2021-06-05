@@ -8,6 +8,7 @@ from main.postBase import PostBase
 import json
 import os
 import requests
+from pprint import pprint
 
 class WebhookPost(PostBase):
 
@@ -18,22 +19,25 @@ class WebhookPost(PostBase):
 
         self.webhook_url = os.environ.get('WEBHOOK_URL')
 
-    def post(self, inOut, lastIn, duration_sec, clicktype, dryrun = False):
+    def post(self, inOut, lastIn, duration_sec, clickType, dryrun = False):
 
         logger.debug(f'start post')
 
         if (not self.webhook_url):
             logger.debug("no url . skip")
-            return
+            return {"success": True, "message": "No URL. Webhook post skip."}
 
-        logger.debug(f'post webhook {self.webhook_url} {inOut} {lastIn} {duration_sec}')
+        logger.debug(f'post webhook {self.webhook_url} inOut={inOut} lastIn={lastIn} duration={duration_sec}')
 
-        payload = {'type': f'bath{inOut}', 'duration_sec': duration_sec, 'clickType': clicktype}
+        payload = {'type': f'bath{inOut}', 'duration_sec': duration_sec, 'clickType': clickType}
 
+        response = None
         if dryrun == False:
-            r = requests.post(self.webhook_url, data=payload, timeout=2)
+            response = requests.post(self.webhook_url, data=payload, timeout=30)
+            logger.info(response.json())
         else:
             payload_dump = json.dumps(payload, ensure_ascii=False)
-            logger.debug(f'{self.webhook_url} payload={payload_dump}')
+            logger.info(f'{self.webhook_url} payload={payload_dump}')
 
         logger.debug('done')
+        return {"success": True, "message": "Webhook post ok.", "response": response}

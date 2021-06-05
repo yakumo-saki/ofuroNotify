@@ -12,5 +12,9 @@ export WEBHOOK_URL=http://webhook.example.com/webhook/api
 # 今の所無意味（未実装）
 export SQS_ENDPOINT=https://sqs.ap-northeast-1.amazonaws.com/YYYYYYY/XXX
 
-python3 lambda_debug_notify.py
-python3 lambda_debug_sqs.py
+export WEBHOOK_URL=http://webhook.example.com/someapi
+
+export LOG_LEVEL=DEBUG
+export DRY_RUN=0    # 0 = normal, 1 = dry-run
+
+python3 lambda_debug_entrypoint.py

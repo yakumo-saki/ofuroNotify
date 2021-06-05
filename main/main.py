@@ -41,6 +41,8 @@ def main_process(aDynamodb, event, context):
 
     if dryrun:
         logger.info("DRYRUN")
+    else:
+        logger.info("NORMAL RUN")
 
     clicktype = get_click_type(event)
 
@@ -51,19 +53,18 @@ def main_process(aDynamodb, event, context):
     dynamo.setup_tables()
 
     (inOut, lastIn, duration_sec) = get_new_params(dynamo)
-    logger.debug(f'got params {inOut} {lastIn} {duration_sec}')
+    logger.info(f'Got params {inOut} {lastIn} {duration_sec}')
 
-    if not dryrun:
-        dynamo.put_history(inOut, lastIn)
+    dynamo.put_history(inOut, lastIn)
 
     post_sns(inOut, lastIn, duration_sec, clicktype, dryrun)
 
     logger.debug("main_process done")
     return inOut
 
-
+# お風呂入るなのか、ほかぱいなのかの設定
 def get_new_params(dynamo):
-    # お風呂入るの設定
+
     inOut = "In"
     lastIn = None
     duration = None
@@ -90,15 +91,19 @@ def post_sns(inOut, lastIn, duration_sec, clickType, dryrun = False):
         params = {'inOut': inOut, 'lastIn': 'lastIn', 'duration_sec': duration_sec, 'clickType': clickType, 'dryrun': dryrun}
 
         mastodon_post = MastodonPost()
-        mastodon = executor.submit(fn=mastodon_post.post, **params)
+        mastodon = executor.submit(mastodon_post.post, **params)
         future_list.append(mastodon)
 
         slack_post = SlackPost()
-        slack = executor.submit(fn=slack_post.post, **params)
+        slack = executor.submit(slack_post.post, **params)
         future_list.append(slack)
 
         webhook_post = WebhookPost()
-        webhook = executor.submit(fn=webhook_post.post, **params)
+        webhook = executor.submit(webhook_post.post, **params)
         future_list.append(webhook)
 
-    _ = futures.as_completed(fs=future_list)
+    #_ = futures.as_completed(fs=future_list)
+
+    for future in futures.as_completed(future_list):
+        logger.info(future.result())
+
