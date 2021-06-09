@@ -29,7 +29,7 @@ def lambda_handler(event, context):
 
     # 以降は普通にloggerを取得して処理を関数を書く
     logger = logging.getLogger(__name__)
-    logger.setLevel(os.environ.getenv('LOG_LEVEL', 'INFO'))
+    logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
 
     dynamodb = boto3.resource('dynamodb')
 

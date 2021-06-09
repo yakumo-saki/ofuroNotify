@@ -37,7 +37,7 @@ def get_click_type(event):
 def main_process(aDynamodb, event, context):
 
     logger.debug("main_process start")
-    dryrun = (os.environ.get('DRYRUN') == "1")
+    dryrun = (os.getenv('DRYRUN', "") == "1")
 
     if dryrun:
         logger.info("DRYRUN")
